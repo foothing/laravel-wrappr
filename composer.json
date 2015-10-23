@@ -1,0 +1,28 @@
+{
+    "name": "foothing/wrappr",
+    "description": "Bind permissions to Laravel routes.",
+    "authors": [
+        {
+            "name": "brazorf",
+            "email": "fabrizio.ranieri@gmail.com"
+        }
+    ],
+	"keywords": ["laravel", "permissions", "routes"],
+    "require": {
+        "php": ">=5.4.0",
+		"illuminate/auth": "~5.0",
+		"illuminate/database": "~5.0",
+		"foothing/common": "0.4.*"
+    },
+	"require-dev": {
+		"orchestra/testbench": "~3.0",
+		"mockery/mockery": "0.9.*"
+	},
+    "autoload": {
+        "psr-4": {
+            "Foothing\\": "src/Foothing"
+        }
+    },
+    "minimum-stability": "stable",
+	"prefer-stable": true
+}
