@@ -126,6 +126,19 @@ You can now configure the routes you would like to put under authorization contr
 In your `config/wrappr.php` edit your `routes` section:
 ```php
 'routes' => [
+
+	[
+		// Allowed values are 'get', 'post', 'put', 'delete'
+		// or the '*' wildcard to enable all verbs.
+		'verb' => 'post',
+
+		// The url path we want to restrict access to.
+		'path' => 'foo',
+
+		// The required permissions for the given path.
+		'permissions' => 'bar',
+	],
+
 	// This configuration will control the access to the
 	// POST:api/v1/resources/users action, which will be
 	// only allowed for users with the 'admin.account' permission
@@ -152,12 +165,27 @@ In your `config/wrappr.php` edit your `routes` section:
 	// will be granted access only when the 'admin' permission
 	// is available to the current auth user.
 	[
-		'verb' => 'get',
+		'verb' => '*',
 		'path' => 'admin/*',
 		'permissions' => ['admin'],
 	],
 ],
 ```
+
+Alternatively you can programmatically setup your routes using
+the `RouteInstaller`.
+```php
+$installer = \App::make('foothing.wrappr.installer');
+$installer
+	->route('get', '/api/v1/*')->requires('api.read')
+	->route('put', '/api/v1/*')->requires('api.write')
+	->route('delete', '/api/v1/users/{id}/*')->requires('api.write,api.read')->on('users')
+	->install();
+
+// Use wildcard
+$installer->route('*', '/admin')->requires->('admin.access');
+```
+
 
 Once you're done with your routes setup run the artisan command
 ```

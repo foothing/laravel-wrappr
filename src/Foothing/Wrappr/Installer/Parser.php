@@ -15,9 +15,6 @@ class Parser {
 		return ['verb' => $verb, 'path' => $path];
 	}
 
-	public function parsePermissionString($permission) {
-	}
-
 	/**
 	 * Encodes a friendly url pattern to database implementation.
 	 * It performs resource identifiers rewrite and wildcards handling,

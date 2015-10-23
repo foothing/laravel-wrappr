@@ -25,6 +25,17 @@ class RouteInstallerTest extends BaseTestCase {
 		$this->assertEquals( 'users', $routes[2]->resourceName);
 	}
 
+	function test_route_wildcard() {
+		$this->routeInstaller->route('*', '/api/v1/*')->requires('api.read')->install();
+		$repository = new \Foothing\Wrappr\Routes\RouteRepository( new \Foothing\Wrappr\Routes\Route() );
+		$routes = $repository->all();
+		$this->assertEquals( 4, count($routes) );
+		$this->assertEquals( 'get', $routes[0]->verb );
+		$this->assertEquals( 'post', $routes[1]->verb );
+		$this->assertEquals( 'put', $routes[2]->verb );
+		$this->assertEquals( 'delete', $routes[3]->verb );
+	}
+
 	function _testMake() {
 		$config = [
 			'routes' => [
