@@ -27,24 +27,10 @@ class RouteInstaller extends Browser {
 		$this->reset();
 	}
 
-	/*
-	public function make($config) {
-		foreach($config['routes'] as $path => $route) {
-			// @FIXME! empty optional resource
-			$this->route($route['verb'], $route['path'])->requires($route['permissions'])->on($route['resource']);
-		}
-		foreach($config['permissions'] as $permission) {
-			$this->permissions[ $permission['permission'] ]['roles'] = (array)$permission['roles'];
-			if (isset($permission['resource'])) {
-				$this->permissions[ $permission['permission'] ]['resource'] = $permission['resource'];
-			}
-		}
-		return $this;
-	}
-	*/
-
 	public function route($verb, $pattern) {
-		if ( ! in_array(strtoupper($verb), ['GET', 'POST', 'PUT', 'DELETE']) ) {
+		$allowed = ['GET', 'POST', 'PUT', 'DELETE'];
+
+		if ( ! in_array(strtoupper($verb), array_merge($allowed, ['*'])) ) {
 			throw new \Exception("HTTP verb not supported");
 		}
 
@@ -52,7 +38,16 @@ class RouteInstaller extends Browser {
 			throw new \Exception("Pattern can't be empty.");
 		}
 
-		$this->next( $this->parser->parsePattern($pattern) )->verb = $verb;
+		if ($verb == '*') {
+			foreach ($allowed as $verb) {
+				$this->route($verb, $pattern);
+			}
+		}
+
+		else {
+			$this->next( $this->parser->parsePattern($pattern) )->verb = $verb;
+		}
+
 		return $this;
 	}
 
