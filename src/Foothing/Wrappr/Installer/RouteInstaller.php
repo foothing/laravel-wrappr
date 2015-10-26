@@ -20,6 +20,8 @@ class RouteInstaller extends Browser {
 	 */
 	protected $parser;
 
+	protected $allowed = ['GET', 'POST', 'PUT', 'DELETE'];
+
 	function __construct(PermissionProviderInterface $provider, RouteRepository $repository) {
 		$this->provider = $provider;
 		$this->repository = $repository;
@@ -28,9 +30,7 @@ class RouteInstaller extends Browser {
 	}
 
 	public function route($verb, $pattern) {
-		$allowed = ['GET', 'POST', 'PUT', 'DELETE'];
-
-		if ( ! in_array(strtoupper($verb), array_merge($allowed, ['*'])) ) {
+		if ( ! in_array(strtoupper($verb), array_merge($this->allowed, ['*'])) ) {
 			throw new \Exception("HTTP verb not supported");
 		}
 
@@ -38,11 +38,11 @@ class RouteInstaller extends Browser {
 			throw new \Exception("Pattern can't be empty.");
 		}
 
-		if ($verb == '*') {
-			foreach ($allowed as $verb) {
+		/*if ($verb == '*') {
+			foreach ($this->allowed as $verb) {
 				$this->route($verb, $pattern);
 			}
-		}
+		}*/
 
 		else {
 			$this->next( $this->parser->parsePattern($pattern) )->verb = $verb;
@@ -64,7 +64,17 @@ class RouteInstaller extends Browser {
 	public function install() {
 		if ( ! empty($this->collection) ) {
 			foreach ($this->collection as $route) {
-				$this->repository->create( $route );
+				if ($route->verb == '*') {
+					foreach ($this->allowed as $verb) {
+						$clone = $route->replicate();
+						$clone->verb = $verb;
+						$this->repository->create( $clone );
+					}
+				}
+
+				else {
+					$this->repository->create( $route );
+				}
 			}
 		}
 
