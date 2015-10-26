@@ -31,9 +31,13 @@ class RouteInstallerTest extends BaseTestCase {
 		$routes = $repository->all();
 		$this->assertEquals( 4, count($routes) );
 		$this->assertEquals( 'get', $routes[0]->verb );
+		$this->assertEquals( 'api.read', $routes[0]->permissions[0] );
 		$this->assertEquals( 'post', $routes[1]->verb );
+		$this->assertEquals( 'api.read', $routes[1]->permissions[0] );
 		$this->assertEquals( 'put', $routes[2]->verb );
+		$this->assertEquals( 'api.read', $routes[2]->permissions[0] );
 		$this->assertEquals( 'delete', $routes[3]->verb );
+		$this->assertEquals( 'api.read', $routes[3]->permissions[0] );
 	}
 
 	function _testMake() {

@@ -161,13 +161,22 @@ In your `config/wrappr.php` edit your `routes` section:
 		'resource' => 'post',
 	],
 
-	// In this case the 'admin' route and every nested route
+	// In this case the 'admin/' nested routes
 	// will be granted access only when the 'admin' permission
 	// is available to the current auth user.
 	[
 		'verb' => '*',
 		'path' => 'admin/*',
 		'permissions' => ['admin'],
+	],
+
+	// You can also use the path wildcard in this way,
+	// therefore requiring the 'superadmin' permission
+	// for each route starting with 'admin'.
+	[
+		'verb' => '*',
+		'path' => 'admin*',
+		'permissions' => ['superadmin'],
 	],
 ],
 ```

@@ -70,12 +70,12 @@ class Manager {
 		// - $repo->all($criteria);
 		// - implement shortcuts like $repo->order('pattern')->all();
 		$criteria = new EloquentCriteria();
-		$criteria->filter('verb', $verb)->order('pattern', 'asc');
+		$criteria->filter('verb', $verb)->order('pattern', 'desc');
 		if ( ! $result = $this->routes->paginate($criteria)) {
 			return null;
 		}
 
-		$routes = $result->data;
+		$routes = $result->items();
 
 		$replacedPath = $this->replace( $this->parser->trimPath($path) );
 		foreach ($routes as $route) {
