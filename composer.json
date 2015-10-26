@@ -1,5 +1,5 @@
 {
-    "name": "foothing/wrappr",
+    "name": "foothing/laravel-wrappr",
     "description": "Bind permissions to Laravel routes.",
     "authors": [
         {
