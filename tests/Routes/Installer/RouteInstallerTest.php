@@ -12,7 +12,7 @@ class RouteInstallerTest extends BaseTestCase {
 			->route('delete', '/api/v1/users/{id}/*')->requires('api.write,api.read')->on('users')
 			->install();
 
-		$repository = new \Foothing\Wrappr\Routes\RouteRepository( new \Foothing\Wrappr\Routes\Route() );
+		$repository = new \Foothing\Wrappr\Routes\RouteRepository( new \Foothing\Wrappr\Routes\Route(), new \Foothing\Wrappr\Installer\Parser() );
 		$routes = $repository->all();
 		$this->assertEquals( 3, count($routes) );
 		$this->assertEquals( 'get', $routes[0]->verb );
@@ -27,7 +27,7 @@ class RouteInstallerTest extends BaseTestCase {
 
 	function test_route_wildcard() {
 		$this->routeInstaller->route('*', '/api/v1/*')->requires('api.read')->install();
-		$repository = new \Foothing\Wrappr\Routes\RouteRepository( new \Foothing\Wrappr\Routes\Route() );
+		$repository = new \Foothing\Wrappr\Routes\RouteRepository( new \Foothing\Wrappr\Routes\Route(), new \Foothing\Wrappr\Installer\Parser() );
 		$routes = $repository->all();
 		$this->assertEquals( 4, count($routes) );
 		$this->assertEquals( 'get', $routes[0]->verb );
@@ -76,9 +76,6 @@ class RouteInstallerTest extends BaseTestCase {
 		$this->assertEquals('users', $permissions['api.read']['roles'][0]);
 		$this->assertEquals('admins', $permissions['admin.account']['roles'][0]);
 		$this->assertEquals('editors', $permissions['admin.account']['roles'][1]);
-
-		// @TODO fix provider Mock.
-		//$installer->install();
 	}
 
 	function test_weird_route_input() {
