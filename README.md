@@ -6,8 +6,8 @@ and it is indepentent from a specific permissions handler, allowing to
 add route checks even if your permissions handler
 doesn't support this feature natively.
 
-However, this package comes with [BeatSwitch/lock-laravel][bs] and default Laravel
-`App\User` integration out of the box.
+However, this package comes with [BeatSwitch/lock-laravel][bs] and Laravel
+`Auth` integration out of the box.
 
 ## Install and Setup
 Composer install
@@ -172,8 +172,18 @@ In your `config/wrappr.php` edit your `routes` section:
 ],
 ```
 
+Once you're done with your routes setup run the artisan command
+```
+php artisan wrappr:install
+```
+
+Note that each time you change the routes configuration you should
+run the artisan command again in order to refresh them.
+
+---
 Alternatively you can programmatically setup your routes using
-the `RouteInstaller`.
+the `RouteInstaller`. In this case you won't need the artisan command.
+
 ```php
 $installer = \App::make('foothing.wrappr.installer');
 $installer
@@ -186,12 +196,6 @@ $installer
 $installer->route('*', '/admin')->requires->('admin.access');
 ```
 
-
-Once you're done with your routes setup run the artisan command
-```
-php artisan wrappr:install
-```
-
 Add the global Middleware to your `App\Http\Kernel` like this
 ```php
 protected $middleware = [
@@ -199,11 +203,32 @@ protected $middleware = [
 ];
 ```
 
-And you're all set. The Middleware will parse all incoming http requests
+and you're all set. The Middleware will parse all incoming http requests
 to match your installed routes and it will react like the following
 - if a route pattern is not found access is __granted__
 - if a route pattern is found it will trigger the permissions provider
 that will perform the check
+
+### A note on routes processing order
+Once you've got your routes installed keep in mind that
+they will be processed in a hierarchical order,  from the
+more specific to the more generic. Look at this example
+
+```
+api/v1/users/{id}/*
+api/v1/users/{id}
+api/v1/*
+api/v1
+api/*
+
+```
+
+This will result in the following behaviour
+- if you request `foo/bar` route is not found hence access is allowed
+- if you request `api/foo` permissions bound to the `api/*` pattern will be applied
+- if you request `api/v1` permission bound to the `api/v1` pattern will be applied
+
+and so on.
 
 ## Middleware Response
 Both the middleware implementation will return `HTTP 401` on failure
@@ -218,7 +243,8 @@ More info coming soon.
 There's more i would like to implement in this package. Feel free
 to drop a line if you'd like to see something implemented.
 
-- [ ] wildcard for route verb config
+- [x] wildcard for route verb config
+- [x] hierarchical routes
 - [ ] routes table name configuration
 - [ ] Illuminate Gate integration
 - [ ] Sentry integration

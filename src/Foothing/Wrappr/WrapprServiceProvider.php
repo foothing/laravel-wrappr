@@ -10,7 +10,7 @@ class WrapprServiceProvider extends ServiceProvider {
 
 		// Interfaces binding.
 		$this->app->bind('Foothing\Wrappr\Providers\Permissions\PermissionProviderInterface', config('wrappr.permissionsProvider'));
-		$this->app->bind('Foothing\Wrappr\Providers\Users\UserProviderInterface', config('wrappr.usersProvirder'));
+		$this->app->bind('Foothing\Wrappr\Providers\Users\UserProviderInterface', config('wrappr.usersProvider'));
 	}
 
 	public function boot() {

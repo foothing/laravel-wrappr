@@ -1,6 +1,7 @@
 <?php namespace Foothing\Wrappr;
 
 
+use Foothing\Common\Repository\Eloquent\EloquentCriteria;
 use Foothing\Wrappr\Installer\Parser;
 use Foothing\Wrappr\Providers\Permissions\PermissionProviderInterface;
 use Foothing\Wrappr\Providers\Users\UserProviderInterface;
@@ -27,7 +28,7 @@ class Manager {
 
 	function checkPath($verb, $path, $user = null) {
 		// Find the route.
-		$route = $this->routes->findByPath($verb, $path);
+		$route = $this->bestMatch($verb, $path);
 
 		// When a route is not found we assume it has no permissions bound.
 		if ( ! $route ) {
@@ -62,5 +63,34 @@ class Manager {
 //print $user->roles;
 //print "check $user->id " . implode(",", $route->permissions) . " $route->resourceName $route->resourceId";
 		return $this->permissionProvider->check($user, $route->permissions, $route->resourceName, $route->resourceId);
+	}
+
+	function bestMatch($verb, $path) {
+		// @TODO improve repostitory criteria usage:
+		// - $repo->all($criteria);
+		// - implement shortcuts like $repo->order('pattern')->all();
+		$criteria = new EloquentCriteria();
+		$criteria->filter('verb', $verb)->order('pattern', 'asc');
+		if ( ! $result = $this->routes->paginate($criteria)) {
+			return null;
+		}
+
+		$routes = $result->data;
+
+		$replacedPath = $this->replace( $this->parser->trimPath($path) );
+		foreach ($routes as $route) {
+			//print "\ncheck $path in $route->pattern";
+			$replacedPattern = $this->replace($route->pattern);
+			if (preg_match("/^$replacedPattern$/", $replacedPath)) {
+				return $route;
+			}
+		}
+
+		return null;
+	}
+
+	protected function replace ($path) {
+		$path = preg_replace("/\//", "___", $path);
+		return $path;
 	}
 }
