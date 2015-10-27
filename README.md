@@ -221,15 +221,14 @@ that will perform the check
 ### A note on routes processing order
 Once you've got your routes installed keep in mind that
 they will be processed in a hierarchical order,  from the
-more specific to the more generic. Look at this example
+more generic to the more specific. Look at this example
 
 ```
-api/v1/users/{id}/*
-api/v1/users/{id}
-api/v1/*
-api/v1
 api/*
-
+api/v1
+api/v1/*
+api/v1/users/{id}
+api/v1/users/{id}/*
 ```
 
 This will result in the following behaviour
