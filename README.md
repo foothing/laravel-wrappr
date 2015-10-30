@@ -243,6 +243,14 @@ Both the middleware implementation will return `HTTP 401` on failure
 with an additional `X-Reason: permission` header that will come handy
 when dealing with responses on the client side (i.e. an angular interceptor).
 
+If you want your error responses to be redirected when the Middleware check fails,
+just set the redirect path in your **wrappr.config**
+
+```php
+'redirect' => '/login'
+```
+
+This value will be ignored when the http request is an ajax request.
 
 ## How to develop additional providers
 More info coming soon.

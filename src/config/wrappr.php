@@ -6,6 +6,9 @@ return [
 
 	'usersProvider' => 'Foothing\Wrappr\Providers\Users\DefaultProvider',
 
+	// Redirect response when check fails and request is not ajax.
+	'redirect' => '/',
+
 	'install' => [
 		'routes' => [
 //		[
