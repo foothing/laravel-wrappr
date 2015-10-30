@@ -18,7 +18,7 @@ class CheckRoute extends AbstractMiddleware {
 		}
 
 		if ( ! $this->manager->check($route) ) {
-			return $this->error();
+			return $this->error($request);
 		}
 
 		return $next($request);
