@@ -55,19 +55,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase  {
 
 	function testBestMatch() {
 		$this->users->shouldReceive('getAuthUser')->andReturn( null );
-		$parser = new \Foothing\Wrappr\Installer\Parser();
-
-		$routes = (object)[
-			'data' => [
-				$parser->parsePattern("api/v1/users/{id}/*"),
-				$parser->parsePattern("api/v1/users/{id}"),
-				$parser->parsePattern("api/v1/*"),
-				$parser->parsePattern("api/v1"),
-				$parser->parsePattern("api/*"),
-				$parser->parsePattern("*"),
-			]
-		];
-		$this->routes->shouldReceive('paginate')->andReturn( $routes );
+		$this->routes->shouldReceive('paginate')->andReturn( new Routes() );
 		$this->assertEquals(".*", $this->manager->bestMatch('get', 'test')->pattern );
 		$this->assertEquals("api/.*", $this->manager->bestMatch('get', 'api/1')->pattern );
 		$this->assertEquals("api/.*", $this->manager->bestMatch('get', 'api/a')->pattern );
@@ -101,4 +89,18 @@ class Mocks {
 	public static function route($resourceId = null, $resourceName = null) {
 		return new \Foothing\Wrappr\Routes\Route(['resourceId' => $resourceId, 'resourceName' => $resourceName]);
 	}
+}
+
+class Routes {
+    function items() {
+        $parser = new \Foothing\Wrappr\Installer\Parser();
+        return [
+            $parser->parsePattern("api/v1/users/{id}/*"),
+            $parser->parsePattern("api/v1/users/{id}"),
+            $parser->parsePattern("api/v1/*"),
+            $parser->parsePattern("api/v1"),
+            $parser->parsePattern("api/*"),
+            $parser->parsePattern("*"),
+        ];
+    }
 }
