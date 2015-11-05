@@ -1,7 +1,6 @@
 <?php namespace Foothing\Wrappr\Providers\Permissions;
 
-
-interface PermissionProviderInterface {
+abstract class AbstractProvider implements PermissionProviderInterface {
 
     /**
      * Check the given user has access to the given permission.
@@ -13,27 +12,27 @@ interface PermissionProviderInterface {
      *
      * @return mixed
      */
-    function check($user, $permissions, $resourceName = null, $resourceId = null);
+    abstract function check($user, $permissions, $resourceName = null, $resourceId = null);
 
     /**
      * Fluent method to work on users.
      * @param $user
      * @return self
      */
-    function user($user);
+    function user($user) { }
 
     /**
      * Fluent method to work on roles.
      * @param $role
      * @return self
      */
-    function role($role);
+    function role($role) { }
 
     /**
      * Return all permissions for the given subject.
      * @return mixed
      */
-    function all();
+    function all() { }
 
     /**
      * Grant the given permissions to the given subject.
@@ -44,7 +43,7 @@ interface PermissionProviderInterface {
      *
      * @return mixed
      */
-    function grant($permissions, $resourceName = null, $resourceId = null);
+    function grant($permissions, $resourceName = null, $resourceId = null) { }
 
     /**
      * Revoke the given permissions from the given subject.
@@ -55,6 +54,5 @@ interface PermissionProviderInterface {
      *
      * @return mixed
      */
-    function revoke($permissions, $resourceName = null, $resourceId = null);
-
+    function revoke($permissions, $resourceName = null, $resourceId = null) { }
 }
