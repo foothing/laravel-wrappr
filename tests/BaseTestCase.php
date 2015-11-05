@@ -22,7 +22,7 @@ class BaseTestCase extends \Orchestra\Testbench\TestCase {
 	}
 
 	protected function getPackageProviders($app) {
-		$app['config']->set('wrappr.permissionsProvider', 'Foothing\Wrappr\Providers\Permissions\DefaultProvider');
+		$app['config']->set('wrappr.permissionsProvider', 'Foothing\Wrappr\Tests\Mocks\PermissionsProvider');
 		$app['config']->set('wrappr.usersProvider', 'Foothing\Wrappr\Providers\Users\DefaultProvider');
 		return ['Foothing\Wrappr\WrapprServiceProvider'];
 	}
