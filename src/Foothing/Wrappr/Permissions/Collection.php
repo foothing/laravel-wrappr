@@ -1,7 +1,8 @@
 <?php namespace Foothing\Wrappr\Permissions;
 
-// @TODO: toJson()
-class Collection {
+use Illuminate\Contracts\Support\Jsonable;
+
+class Collection implements Jsonable {
 
     /**
      * @var array
@@ -35,5 +36,19 @@ class Collection {
 
     public function countDenied() {
         return count($this->denied);
+    }
+
+    /**
+     * Convert the object to its JSON representation.
+     *
+     * @param  int $options
+     *
+     * @return string
+     */
+    public function toJson($options = 0) {
+        return json_encode([
+            'allowed' => $this->getAllowed(),
+            'denied' => $this->getDenied(),
+        ]);
     }
 }
