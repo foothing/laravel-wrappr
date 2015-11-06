@@ -22,7 +22,8 @@
 	},
     "autoload": {
         "psr-4": {
-            "Foothing\\": "src/Foothing"
+            "Foothing\\": "src/Foothing",
+            "Foothing\\Wrappr\\Tests\\": "tests"
         }
     },
     "minimum-stability": "stable",

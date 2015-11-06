@@ -1,6 +1,6 @@
-<?php
+<?php namespace Foothing\Tests\Routes\Installer;
 
-class ParserTest extends PHPUnit_Framework_TestCase {
+class ParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function test_route_is_properly_parsed() {
 		$parser = new \Foothing\Wrappr\Installer\Parser();
