@@ -18,7 +18,7 @@ before_install:
   - mysql -e "FLUSH PRIVILEGES;" -uroot
 
 script:
-  - phpunit --verbose --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
 
 after_script:
   - vendor/bin/test-reporter
