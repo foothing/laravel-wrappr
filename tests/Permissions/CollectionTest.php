@@ -37,5 +37,4 @@ class CollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('beer', $object->denied[0]->resourceName);
         $this->assertEquals(1, $object->denied[0]->resourceId);
     }
-
 }

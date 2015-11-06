@@ -12,27 +12,27 @@ abstract class AbstractProvider implements PermissionProviderInterface {
      *
      * @return mixed
      */
-    abstract function check($user, $permissions, $resourceName = null, $resourceId = null);
+    public abstract function check($user, $permissions, $resourceName = null, $resourceId = null);
 
     /**
      * Fluent method to work on users.
      * @param $user
      * @return self
      */
-    function user($user) { }
+    public function user($user) { }
 
     /**
      * Fluent method to work on roles.
      * @param $role
      * @return self
      */
-    function role($role) { }
+    public function role($role) { }
 
     /**
      * Return all permissions for the given subject.
      * @return mixed
      */
-    function all() { }
+    public function all() { }
 
     /**
      * Grant the given permissions to the given subject.
@@ -43,7 +43,7 @@ abstract class AbstractProvider implements PermissionProviderInterface {
      *
      * @return mixed
      */
-    function grant($permissions, $resourceName = null, $resourceId = null) { }
+    public function grant($permissions, $resourceName = null, $resourceId = null) { }
 
     /**
      * Revoke the given permissions from the given subject.
@@ -54,5 +54,5 @@ abstract class AbstractProvider implements PermissionProviderInterface {
      *
      * @return mixed
      */
-    function revoke($permissions, $resourceName = null, $resourceId = null) { }
+    public function revoke($permissions, $resourceName = null, $resourceId = null) { }
 }
