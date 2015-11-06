@@ -15,7 +15,7 @@ ready to use.
 I've plans to implement a `Gate` integration as well, feel free
 to drop a line if you're interested in this.
 
-## Usage example <a href name="usage">#</a>
+## Usage example <a href name="usage"></a>
 
 A basic use case where you want to restrict route access to the
 `read.users` permission
@@ -66,7 +66,7 @@ you can define a rule like the following to restrict access:
 - [How to develop providers](#providers_develop)
 - [License](#license)
 
-## Concept <a href name="concept">#</a>
+## Concept <a href name="concept"></a>
 As it happens you may need to switch to another acl library at some time,
 so i've tried to put some effort into adding an abstract layer that
 would make your app more maintenaible.
@@ -83,7 +83,7 @@ is required in order to retrieve the authenticated user.
 While the *route checks* are the main focus of this project,
 the *acl manipulation* feature tries to stay out of the way so you'll just use it at will.
 
-## Install and Setup <a href name="setup">#</a>
+## Install and Setup <a href name="setup"></a>
 Composer install
 
 ```
@@ -106,7 +106,7 @@ Then publish package configuration and migration files
 php artisan vendor:publish --provider="Foothing\Wrappr\WrapprServiceProvider"
 ```
 
-## Configure the providers <a href name="configure">#</a>
+## Configure the providers <a href name="configure"></a>
 Once you've published the config file you can
 configure an *users provider* and a *permissions provider* accordingly
 to your project setup.
@@ -118,7 +118,7 @@ In your `config/wrappr.php`
 'usersProvider' => 'Foothing\Wrappr\Providers\Users\DefaultProvider',
 ```
 
-## Use within Laravel Router <a href name="route_basic">#</a>
+## Use within Laravel Router <a href name="route_basic"></a>
 There are two use cases for this package, each implemented in
 its own Middleware. Let's take a look to the default case.
 First of all you need to setup the Middleware in your `App\Http\Kernel`.
@@ -161,7 +161,7 @@ Route::get('api/users/{id?}', ['middleware:wrappr.check:read.users,user,{id}', f
 When you pass a resource identifier within the brackets, the middleware will
 try to retrieve the value from the http request automatically.
 
-## Use with custom routes <a href name="route_custom">#</a>
+## Use with custom routes <a href name="route_custom"></a>
 When you're not able to fine-control at routes definition level, there's
 an alternative way of handling permissions. Think about a global
 RESTful controller like the following:
@@ -188,7 +188,7 @@ php artisan migrate
 
 then you have the following two choices.
 
-### Install routes with config file <a href name="route_install_config">#</a>
+### Install routes with config file <a href name="route_install_config"></a>
 
 You can now configure the routes you would like to put under authorization control
 In your `config/wrappr.php` edit your `routes` section:
@@ -257,7 +257,7 @@ php artisan wrappr:install
 > Note that each time you change the routes configuration you should
 > run the artisan command again in order to refresh them.
 
-### Install routes programmatically <a href name="route_install_prog">#</a>
+### Install routes programmatically <a href name="route_install_prog"></a>
 Alternatively you can programmatically setup your routes using
 the `RouteInstaller`. In this case you won't need the artisan command.
 
@@ -273,7 +273,7 @@ $installer
 $installer->route('*', '/admin')->requires->('admin.access');
 ```
 
-### Setup the middleware <a href name="middleware">#</a>
+### Setup the middleware <a href name="middleware"></a>
 Add the global Middleware to your `App\Http\Kernel` like this
 ```php
 protected $middleware = [
@@ -283,7 +283,7 @@ protected $middleware = [
 
 and you're all set.
 
-### A note on routes processing order <a href name="route_processing">#</a>
+### A note on routes processing order <a href name="route_processing"></a>
 The Middleware will parse all incoming http requests
 to match your installed routes and it will react like the following
 - if a route pattern is not found access is __granted__
@@ -309,7 +309,7 @@ This will result in the following behaviour
 
 and so on.
 
-## Middleware Response <a href name="middleware_response">#</a>
+## Middleware Response <a href name="middleware_response"></a>
 Both the middleware implementation will return `HTTP 401` on failure
 with an additional `X-Reason: permission` header that will come handy
 when dealing with responses on the client side (i.e. an angular interceptor).
@@ -322,7 +322,7 @@ just set the redirect path in your **wrappr.config**
 ```
 This value will be ignored when the http request is an ajax request.
 
-## How to develop providers <a href name="providers_develop">#</a>
+## How to develop providers <a href name="providers_develop"></a>
 Extend `Foothing\Wrappr\Providers\Permissions\AbstractProvider`.
 
 You'll have the mandatory `check()` method to implement, and other optional
@@ -339,27 +339,38 @@ methods you can implement or ignore at your choice.
  *
  * @return mixed
  */
-abstract function check($user, $permissions, $resourceName = null, $resourceId = null);
+public function check($user, $permissions, $resourceName = null, $resourceId = null);
+
+/**
+ * Check the given subject has access to the given permission.
+ *
+ * @param      $permissions
+ * @param null $resourceName
+ * @param null $resourceId
+ *
+ * @return mixed
+ */
+public function can($permissions, $resourceName = null, $resourceId = null);
 
 /**
  * Fluent method to work on users.
  * @param $user
  * @return self
  */
-function user($user) { }
+public function user($user);
 
 /**
  * Fluent method to work on roles.
  * @param $role
  * @return self
  */
-function role($role) { }
+public function role($role);
 
 /**
  * Return all permissions for the given subject.
  * @return mixed
  */
-function all() { }
+public function all();
 
 /**
  * Grant the given permissions to the given subject.
@@ -370,7 +381,7 @@ function all() { }
  *
  * @return mixed
  */
-function grant($permissions, $resourceName = null, $resourceId = null) { }
+public function grant($permissions, $resourceName = null, $resourceId = null);
 
 /**
  * Revoke the given permissions from the given subject.
@@ -381,7 +392,7 @@ function grant($permissions, $resourceName = null, $resourceId = null) { }
  *
  * @return mixed
  */
-function revoke($permissions, $resourceName = null, $resourceId = null) { }
+public function revoke($permissions, $resourceName = null, $resourceId = null);
 ```
 
 
