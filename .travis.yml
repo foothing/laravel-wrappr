@@ -8,6 +8,13 @@ php:
 install:
   - composer install
 
+services:
+  - mysql
+
+before_install:
+  - mysql -e "create database IF NOT EXISTS routes;" -uroot
+  - mysql -e "GRANT ALL PRIVILEGES ON routes.* TO 'routes'@'%';" -uroot
+
 script:
   - phpunit --verbose --coverage-clover build/logs/clover.xml
 
