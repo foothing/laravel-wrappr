@@ -10,3 +10,6 @@ install:
 
 script:
   - phpunit --verbose --coverage-clover build/logs/clover.xml
+
+after_script:
+  - vendor/bin/test-reporter
