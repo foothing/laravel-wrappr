@@ -2,16 +2,19 @@
 
 use Foothing\Wrappr\Providers\Permissions\AbstractProvider;
 
-class PermissionsProvider extends AbstractProvider {
-    function check($user, $permissions, $resourceName = null, $resourceId = null) {}
+class PermissionsProvider extends AbstractProvider
+{
+    public function check($user, $permissions, $resourceName = null, $resourceId = null) {}
 
-    function user($user) { }
+    public function can($permissions, $resourceName = null, $resourceId = null) {}
 
-    function role($role) { }
+    public function user($user) { }
 
-    function all() { }
+    public function role($role) { }
 
-    function grant($permissions, $resourceName = null, $resourceId = null) { }
+    public function all() { }
 
-    function revoke($permissions, $resourceName = null, $resourceId = null) {}
+    public function grant($permissions, $resourceName = null, $resourceId = null) { }
+
+    public function revoke($permissions, $resourceName = null, $resourceId = null) {}
 }

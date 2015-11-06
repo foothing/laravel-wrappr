@@ -13,27 +13,38 @@ interface PermissionProviderInterface {
      *
      * @return mixed
      */
-    function check($user, $permissions, $resourceName = null, $resourceId = null);
+    public function check($user, $permissions, $resourceName = null, $resourceId = null);
+
+    /**
+     * Check the given subject has access to the given permission.
+     *
+     * @param      $permissions
+     * @param null $resourceName
+     * @param null $resourceId
+     *
+     * @return mixed
+     */
+    public function can($permissions, $resourceName = null, $resourceId = null);
 
     /**
      * Fluent method to work on users.
      * @param $user
      * @return self
      */
-    function user($user);
+    public function user($user);
 
     /**
      * Fluent method to work on roles.
      * @param $role
      * @return self
      */
-    function role($role);
+    public function role($role);
 
     /**
      * Return all permissions for the given subject.
      * @return mixed
      */
-    function all();
+    public function all();
 
     /**
      * Grant the given permissions to the given subject.
@@ -44,7 +55,7 @@ interface PermissionProviderInterface {
      *
      * @return mixed
      */
-    function grant($permissions, $resourceName = null, $resourceId = null);
+    public function grant($permissions, $resourceName = null, $resourceId = null);
 
     /**
      * Revoke the given permissions from the given subject.
@@ -55,6 +66,6 @@ interface PermissionProviderInterface {
      *
      * @return mixed
      */
-    function revoke($permissions, $resourceName = null, $resourceId = null);
+    public function revoke($permissions, $resourceName = null, $resourceId = null);
 
 }
