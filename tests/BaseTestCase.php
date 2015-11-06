@@ -31,7 +31,7 @@ class BaseTestCase extends \Orchestra\Testbench\TestCase {
 		parent::setUp();
 		$this->artisan('migrate', [
 			'--database'	=>	'testbench',
-			'--realpath'	=> 	realpath(__DIR__ . '/../../src/database')
+			'--realpath'	=> 	realpath(__DIR__ . '/../src/database')
 		]);
 		\DB::table('routes')->delete();
 	}
