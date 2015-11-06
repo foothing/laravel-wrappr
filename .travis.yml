@@ -9,4 +9,4 @@ install:
   - composer install
 
 script:
-  - vendor/bin/phpunit --verbose --coverage-clover build/logs/clover.xml
+  - phpunit --verbose --coverage-clover build/logs/clover.xml
