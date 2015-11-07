@@ -23,10 +23,14 @@
 	},
     "autoload": {
         "psr-4": {
-            "Foothing\\": "src/Foothing",
-            "Foothing\\Wrappr\\Tests\\": "tests"
+            "Foothing\\": "src/Foothing"
         }
     },
+	"autoload-dev": {
+		"psr-4": {
+			"Foothing\\Wrappr\\Tests\\": "tests"
+		}
+	},
     "minimum-stability": "stable",
 	"prefer-stable": true
 }
