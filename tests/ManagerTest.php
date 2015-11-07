@@ -1,5 +1,6 @@
 <?php namespace Foothing\Wrappr\Tests;
 
+use Foothing\Wrappr\Installer\Parser;
 use Foothing\Wrappr\Routes\Route;
 use Foothing\Wrappr\Tests\Mocks\Mocks;
 use Foothing\Wrappr\Tests\Mocks\Routes;
@@ -54,13 +55,22 @@ class ManagerTest extends \PHPUnit_Framework_TestCase  {
 
     public function test_check_passes_if_route_not_found() {
         $this->users->shouldReceive('getAuthUser')->andReturn(null);
-        $this->routes->shouldReceive('paginate')->andReturn(null);
+        $this->routes->shouldReceive('getOrderedRoutes')->andReturn(null);
         $this->assertTrue($this->manager->checkPath('get', 'test'));
     }
 
     public function testBestMatch() {
+        $parser = new Parser();
+        $routes = [
+            $parser->parsePattern("api/v1/users/{id}/*"),
+            $parser->parsePattern("api/v1/users/{id}"),
+            $parser->parsePattern("api/v1/*"),
+            $parser->parsePattern("api/v1"),
+            $parser->parsePattern("api/*"),
+            $parser->parsePattern("*"),
+        ];
         $this->users->shouldReceive('getAuthUser')->andReturn(null);
-        $this->routes->shouldReceive('paginate')->andReturn(new Routes());
+        $this->routes->shouldReceive('getOrderedRoutes')->andReturn($routes);
         $this->assertEquals(".*", $this->manager->bestMatch('get', 'test')->pattern);
         $this->assertEquals("api/.*", $this->manager->bestMatch('get', 'api/1')->pattern);
         $this->assertEquals("api/.*", $this->manager->bestMatch('get', 'api/a')->pattern);

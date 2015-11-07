@@ -1,16 +1,16 @@
 <?php namespace Foothing\Wrappr\Routes;
 
-use Foothing\Common\Repository\Eloquent\AbstractEloquentRepository;
+use Foothing\Repository\Eloquent\EloquentRepository;
 use Foothing\Wrappr\Installer\Parser;
 
-class RouteRepository extends AbstractEloquentRepository {
+class RouteRepository extends EloquentRepository {
     /**
      * @var \Foothing\Wrappr\Installer\Parser
      */
     protected $parser;
 
     function __construct(Route $route, Parser $parser) {
-        $this->model = $route;
+        parent::__construct($route);
         $this->parser = $parser;
     }
 
@@ -36,6 +36,16 @@ class RouteRepository extends AbstractEloquentRepository {
     function update($route) {
         $route->pattern = $this->parser->trimPath($route->pattern);
         return parent::update($route);
+    }
+
+    /**
+     * Return routes by verb, ordered by pattern desc.
+     *
+     * @param $verb
+     * @return mixed
+     */
+    public function getOrderedRoutes($verb) {
+        return $this->filter('verb', $verb)->order('pattern', 'desc')->all();
     }
 
 }
