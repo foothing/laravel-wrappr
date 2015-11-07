@@ -6,7 +6,7 @@ php:
   - hhvm
 
 install:
-  - composer install
+  - composer install --no-interaction --prefer-source
 
 services:
   - mysql
