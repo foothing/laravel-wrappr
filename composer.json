@@ -13,18 +13,25 @@
         "php": ">=5.4.0",
 		"illuminate/auth": "~5.0",
 		"illuminate/database": "~5.0",
-		"foothing/laravel-repository": "0.4.*",
-		"codeclimate/php-test-reporter": "dev-master"
+		"foothing/laravel-repository": "0.5.*"
+
     },
 	"require-dev": {
 		"orchestra/testbench": "~3.0",
-		"mockery/mockery": "0.9.*"
+		"mockery/mockery": "0.9.*",
+		"phpunit/phpunit": "4.*",
+		"codeclimate/php-test-reporter": "dev-master"
 	},
     "autoload": {
         "psr-4": {
             "Foothing\\": "src/Foothing"
         }
     },
+	"autoload-dev": {
+		"psr-4": {
+			"Foothing\\Wrappr\\Tests\\": "tests"
+		}
+	},
     "minimum-stability": "stable",
 	"prefer-stable": true
 }

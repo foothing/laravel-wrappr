@@ -3,17 +3,17 @@
 use Illuminate\Auth\Guard;
 
 class DefaultProvider implements UserProviderInterface {
-	protected $guard;
+    protected $guard;
 
-	function __construct(Guard $guard) {
-		$this->guard = $guard;
-	}
+    function __construct(Guard $guard) {
+        $this->guard = $guard;
+    }
 
-	function getAuthUser() {
-		return $this->guard->user();
-	}
+    function getAuthUser() {
+        return $this->guard->user();
+    }
 
-	function isSuperAdmin($user) {
-		return $user->id == 1;
-	}
+    function isSuperAdmin($user) {
+        return $user->id == 1;
+    }
 }

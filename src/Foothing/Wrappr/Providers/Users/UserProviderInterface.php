@@ -2,6 +2,6 @@
 
 
 interface UserProviderInterface {
-	function getAuthUser();
-	function isSuperAdmin($user);
+    function getAuthUser();
+    function isSuperAdmin($user);
 }

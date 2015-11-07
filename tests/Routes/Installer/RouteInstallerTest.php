@@ -1,11 +1,10 @@
-<?php
+<?php namespace Foothing\Tests\Routes\Installer;
+
+use Foothing\Wrappr\Tests\BaseTestCase;
+
 class RouteInstallerTest extends BaseTestCase {
 
-	function setUp() {
-		parent::setUp();
-	}
-
-	function test_route_is_saved() {
+	public function test_route_is_saved() {
 		$this->routeInstaller
 			->route('get', '/api/v1/*')->requires('api.read')
 			->route('put', '/api/v1/*')->requires('api.write')
@@ -25,7 +24,7 @@ class RouteInstallerTest extends BaseTestCase {
 		$this->assertEquals( 'users', $routes[2]->resourceName);
 	}
 
-	function test_route_wildcard() {
+	public function test_route_wildcard() {
 		$this->routeInstaller->route('*', '/api/v1/*')->requires('api.read')->install();
 		$repository = new \Foothing\Wrappr\Routes\RouteRepository( new \Foothing\Wrappr\Routes\Route(), new \Foothing\Wrappr\Installer\Parser() );
 		$routes = $repository->all();
@@ -40,7 +39,7 @@ class RouteInstallerTest extends BaseTestCase {
 		$this->assertEquals( 'api.read', $routes[3]->permissions[0] );
 	}
 
-	function _testMake() {
+	public function _testMake() {
 		$config = [
 			'routes' => [
 				[
@@ -82,7 +81,7 @@ class RouteInstallerTest extends BaseTestCase {
 		$this->assertEquals('editors', $permissions['admin.account']['roles'][1]);
 	}
 
-	function test_weird_route_input() {
+	public function test_weird_route_input() {
 		try {
 			$this->routeInstaller->route(null, null);
 			$this->fail('Exception not raised.');
@@ -98,9 +97,4 @@ class RouteInstallerTest extends BaseTestCase {
 			$this->fail('Exception not raised.');
 		} catch (\Exception $ex) {}
 	}
-
-	public function tearDown() {
-		Mockery::close();
-	}
-
 }
