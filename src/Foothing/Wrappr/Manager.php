@@ -8,72 +8,74 @@ use Foothing\Wrappr\Routes\RouteRepository;
 
 class Manager {
 
-	protected $routes;
-	protected $permissionProvider;
-	protected $userProvider;
-	protected $parser;
+    protected $routes;
+    protected $permissionProvider;
+    protected $userProvider;
+    protected $parser;
 
-	function __construct(RouteRepository $routes, PermissionProviderInterface $permissionProvider, UserProviderInterface $userProvider) {
-		$this->routes = $routes;
-		$this->permissionProvider = $permissionProvider;
-		$this->userProvider = $userProvider;
-		$this->parser = new Parser();
-	}
+    public function __construct(RouteRepository $routes,
+                                PermissionProviderInterface $permissionProvider,
+                                UserProviderInterface $userProvider) {
+        $this->routes = $routes;
+        $this->permissionProvider = $permissionProvider;
+        $this->userProvider = $userProvider;
+        $this->parser = new Parser();
+    }
 
-	function getUser() {
-		return $this->userProvider->getAuthUser();
-	}
+    public function getUser() {
+        return $this->userProvider->getAuthUser();
+    }
 
-	function checkPath($verb, $path, $user = null) {
-		// Find the route.
-		$route = $this->bestMatch($verb, $path);
+    public function checkPath($verb, $path, $user = null) {
+        // Find the route.
+        $route = $this->bestMatch($verb, $path);
 
-		// When a route is not found we assume it has no permissions bound.
-		if ( ! $route ) {
-			return true;
-		}
+        // When a route is not found we assume it has no permissions bound.
+        if (! $route) {
+            return true;
+        }
 
-		// Extract the resource id from the given path.
-		$route->resourceId = $this->parser->getResourceFromPath($route, $path);
+        // Extract the resource id from the given path.
+        $route->resourceId = $this->parser->getResourceFromPath($route, $path);
 
-		// Check the route.
-		return $this->check($route, $user);
-	}
+        // Check the route.
+        return $this->check($route, $user);
+    }
 
-	function check(Route $route, $user = null) {
-		$user = $user ?: $this->getUser();
+    public function check(Route $route, $user = null) {
+        $user = $user ?: $this->getUser();
 
-		// Returning false when auth user is empty.
-		if ( ! $user ) {
-			return false;
-		}
+        // Returning false when auth user is empty.
+        if (! $user) {
+            return false;
+        }
 
-		// Superadmin must always pass.
-		if ($user && $this->userProvider->isSuperAdmin($user)) {
-			return true;
-		}
+        // Superadmin must always pass.
+        if ($user && $this->userProvider->isSuperAdmin($user)) {
+            return true;
+        }
 
-		return $this->permissionProvider->check($user, $route->permissions, $route->resourceName, $route->resourceId);
-	}
+        return $this->permissionProvider->check($user, $route->permissions, $route->resourceName, $route->resourceId);
+    }
 
-	function bestMatch($verb, $path) {
-		if (! $routes = $this->routes->getOrderedRoutes($verb)) {
-			return null;
-		}
+    public function bestMatch($verb, $path) {
+        if (! $routes = $this->routes->getOrderedRoutes($verb)) {
+            return null;
+        }
 
-		$replacedPath = $this->replace( $this->parser->trimPath($path) );
-		foreach ($routes as $route) {
-			$replacedPattern = $this->replace($route->pattern);
-			if (preg_match("/^$replacedPattern$/", $replacedPath)) {
-				return $route;
-			}
-		}
+        $replacedPath = $this->replace($this->parser->trimPath($path));
+        foreach ($routes as $route) {
+            $replacedPattern = $this->replace($route->pattern);
+            if (preg_match("/^$replacedPattern$/", $replacedPath)) {
+                return $route;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	protected function replace ($path) {
-		$path = preg_replace("/\//", "___", $path);
-		return $path;
-	}
+    protected function replace($path) {
+        $path = preg_replace("/\//", "___", $path);
+        return $path;
+    }
 }
