@@ -14,6 +14,11 @@ class DefaultProvider implements UserProviderInterface {
     }
 
     function isSuperAdmin($user) {
-        return $user->id == 1;
+        // Expect user to implement the isSuperAdmin() method.
+        if (method_exists($user, 'isSuperAdmin')) {
+            return $user->isSuperAdmin();
+        }
+
+        throw new \Exception("User implementation doesn't provide isSuperAdmin");
     }
 }
