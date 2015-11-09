@@ -30,6 +30,22 @@ class Collection implements Jsonable {
         return $index === null ? $this->denied : $this->denied[ $index ];
     }
 
+    public function contains($permissionName, $resourceName = null, $resourceId = null) {
+        $permission = new Permission($permissionName, $resourceName, $resourceId);
+        foreach ($this->getAllowed() as $allowed) {
+            if ($allowed->equals($permission)) {
+                return true;
+            }
+        }
+        foreach ($this->getDenied() as $allowed) {
+            if ($allowed->equals($permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function countAllowed() {
         return count($this->allowed);
     }
