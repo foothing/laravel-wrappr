@@ -13,9 +13,11 @@ class Manager {
     protected $userProvider;
     protected $parser;
 
-    public function __construct(RouteRepository $routes,
-                                PermissionProviderInterface $permissionProvider,
-                                UserProviderInterface $userProvider) {
+    public function __construct(
+            RouteRepository $routes,
+            PermissionProviderInterface $permissionProvider,
+            UserProviderInterface $userProvider
+    ) {
         $this->routes = $routes;
         $this->permissionProvider = $permissionProvider;
         $this->userProvider = $userProvider;
