@@ -1,6 +1,5 @@
 <?php namespace Foothing\Wrappr\Commands;
 
-use Foothing\Wrappr\Installer\PermissionInstaller;
 use Foothing\Wrappr\Installer\RouteInstaller;
 use Illuminate\Console\Command;
 
