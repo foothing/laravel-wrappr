@@ -1,5 +1,9 @@
 # Laravel Wrappr
 
+[![Build Status](https://travis-ci.org/foothing/laravel-wrappr.svg?branch=master)](https://travis-ci.org/foothing/laravel-wrappr)
+[![Code Climate](https://img.shields.io/codeclimate/github/foothing/laravel-wrappr.svg)](https://travis-ci.org/foothing/laravel-wrappr)
+[![Test Coverage](https://codeclimate.com/github/foothing/laravel-wrappr/badges/coverage.svg)](https://codeclimate.com/github/foothing/laravel-wrappr/coverage)
+
 This is a Laravel 5 package that aims to simplify the process of
 binding routes to permissions
 and it is indepentent from a specific permissions handler, allowing to
