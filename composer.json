@@ -13,11 +13,11 @@
         "php": ">=5.4.0",
 		"illuminate/auth": "~5.0",
 		"illuminate/database": "~5.0",
-		"foothing/laravel-repository": "0.5.*"
+		"foothing/laravel-repository": "0.6.*"
 
     },
 	"require-dev": {
-		"orchestra/testbench": "~3.0",
+		"orchestra/testbench": "3.1.*",
 		"mockery/mockery": "0.9.*",
 		"phpunit/phpunit": "4.*",
 		"codeclimate/php-test-reporter": "dev-master"
