@@ -22,6 +22,20 @@ class CollectionTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(1, $collection->getDenied(0)->resourceId);
     }
 
+    public function testContains() {
+        $collection = new Collection();
+        $collection->allow('sleep');
+        $collection->allow('drink', 'beer');
+        $collection->deny('eat', 'beef', 1);
+        $this->assertTrue($collection->contains('sleep'));
+        $this->assertTrue($collection->contains('drink', 'beer'));
+        $this->assertTrue($collection->contains('eat', 'beef', 1));
+        $this->assertFalse($collection->contains('sleep', 'foo'));
+        $this->assertFalse($collection->contains('sleep', 'foo', 'bar'));
+        $this->assertFalse($collection->contains('drink'));
+        $this->assertFalse($collection->contains('drink', 'beer', 'baz'));
+    }
+
     public function testToJson() {
         $collection = new Collection();
         $collection->allow('eat', 'beef', 1);

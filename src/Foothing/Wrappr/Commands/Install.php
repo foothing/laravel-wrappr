@@ -1,6 +1,5 @@
 <?php namespace Foothing\Wrappr\Commands;
 
-use Foothing\Wrappr\Installer\PermissionInstaller;
 use Foothing\Wrappr\Installer\RouteInstaller;
 use Illuminate\Console\Command;
 
@@ -25,15 +24,9 @@ class Install extends Command {
      */
     protected $routes;
 
-    /**
-     * @var \Foothing\Wrappr\Installer\PermissionInstaller
-     */
-    protected $permissions;
-
-    public function __construct(RouteInstaller $routes, PermissionInstaller $permissions) {
+    public function __construct(RouteInstaller $routes) {
         parent::__construct();
         $this->routes = $routes;
-        $this->permissions = $permissions;
     }
 
     public function handle() {
@@ -48,22 +41,8 @@ class Install extends Command {
 
             $this->routes->install();
 
-            // @TODO remove permission installer, doesn't make sense.
-
-            /*
-            foreach(config('wrappr.install.permissions') as $permission) {
-                $this->permissions->permission($permission['name'])->to($permission['roles']);
-                if (isset($permission['resource'])) {
-                    $this->permissions->on($permission['resource']);
-                }
-            }*/
-
-
-            //$this->permissions->install();
-
         } catch (\Exception $ex) {
             print ($ex->getTraceAsString());
         }
     }
-
 }

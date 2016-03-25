@@ -11,4 +11,11 @@ class Permission {
         $this->resourceName = $resourceName;
         $this->resourceId = $resourceId;
     }
+
+    public function equals(Permission $p) {
+        return
+            $this->name == $p->name &&
+            $this->resourceName == $p->resourceName &&
+            $this->resourceId == $p->resourceId;
+    }
 }
