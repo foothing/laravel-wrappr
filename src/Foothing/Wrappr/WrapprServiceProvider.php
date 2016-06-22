@@ -15,6 +15,6 @@ class WrapprServiceProvider extends ServiceProvider {
 
 	public function boot() {
 		$this->publishes( [ __DIR__ . "/../../database/" => database_path('/migrations') ], 'migrations' );
-		$this->publishes( [ __DIR__ . "/../../config/routes.php" => config_path('routes.php') ], 'config' );
+		$this->publishes( [ __DIR__ . "/../../config/wrappr.php" => config_path('wrappr.php') ], 'config' );
 	}
 }
