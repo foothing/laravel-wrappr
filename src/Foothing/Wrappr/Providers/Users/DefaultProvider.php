@@ -1,6 +1,6 @@
 <?php namespace Foothing\Wrappr\Providers\Users;
 
-use Illuminate\Auth\Guard;
+use Illuminate\Contracts\Auth\Guard;
 
 class DefaultProvider implements UserProviderInterface {
     protected $guard;
