@@ -1,5 +1,6 @@
 <?php namespace Foothing\Wrappr;
 
+use Foothing\Wrappr\Cache\CacheManager;
 use Foothing\Wrappr\Installer\Parser;
 use Foothing\Wrappr\Providers\Permissions\PermissionProviderInterface;
 use Foothing\Wrappr\Providers\Users\UserProviderInterface;
@@ -12,16 +13,19 @@ class Manager {
     protected $permissionProvider;
     protected $userProvider;
     protected $parser;
+    protected $cache;
 
     public function __construct(
             RouteRepository $routes,
             PermissionProviderInterface $permissionProvider,
-            UserProviderInterface $userProvider
+            UserProviderInterface $userProvider,
+            CacheManager $cache
     ) {
         $this->routes = $routes;
         $this->permissionProvider = $permissionProvider;
         $this->userProvider = $userProvider;
         $this->parser = new Parser();
+        $this->cache = $cache;
     }
 
     public function getUser() {
@@ -61,14 +65,22 @@ class Manager {
     }
 
     public function bestMatch($verb, $path) {
+        $cacheKey = "$verb:$path";
+
+        if ($route = $this->cache->get($cacheKey)) {
+            return $route;
+        }
+
         if (! $routes = $this->routes->getOrderedRoutes($verb)) {
             return null;
         }
 
         $replacedPath = $this->replace($this->parser->trimPath($path));
+
         foreach ($routes as $route) {
             $replacedPattern = $this->replace($route->pattern);
             if (preg_match("/^$replacedPattern$/", $replacedPath)) {
+                $this->cache->put($cacheKey, $route);
                 return $route;
             }
         }

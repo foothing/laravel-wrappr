@@ -4,6 +4,10 @@
 [![Code Climate](https://codeclimate.com/github/foothing/laravel-wrappr/badges/gpa.svg)](https://codeclimate.com/github/foothing/laravel-wrappr)
 [![Test Coverage](https://codeclimate.com/github/foothing/laravel-wrappr/badges/coverage.svg)](https://codeclimate.com/github/foothing/laravel-wrappr/coverage)
 
+> For Laravel 5.1 use 0.5 version
+
+> For Laravel 5.2 and up use the latest 1.x version
+
 This is a Laravel 5 package that aims to simplify the process of
 binding routes to permissions
 and it is indepentent from a specific permissions handler, allowing to
